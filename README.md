@@ -49,7 +49,7 @@ By this way you can use these structures in postgresql-simple functions as such:
 ```haskell
     ls = [LatLon 1 2, LatLon 1.5 2.5, LatLon 2.5 3, LatLon 1 2]
     _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
-        (Only (LineString srid ls0))
+        (Only (LineString srid ls))
     [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
     let LineString srid' ls0' = res
 ```
@@ -58,7 +58,7 @@ Or the same with suitable helper functions:
 
 ```haskell
     _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
-        (Only (putLS srid ls0))
+        (Only (putLS srid ls))
     [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
     let (srid', ls0') = getLS res
 ```
