@@ -39,10 +39,10 @@ instance Castable LatLon where -- specify translation
     fromPointND (Point2D x y) = LatLon y x
 ```
 
-Then any structure of type `Traversable t => t LatLon` can be interpreted as `LineString` or `MultiPoint`. Any structure of type
+Then structure of type `Traversable t => t LatLon` can be interpreted as `LineString` or `MultiPoint`. Any structure of type
 `(Traversable t1, Traversable t2) => t2 (t1 LatLon)` can be interpreted as `Polygon` or `MultiLineString`. And any structure of type
 `(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))`
-can be interpreted as `MultiPolygon`.
+can be interpreted as `MultiPolygon`. Currently, only following `Traversable`s are supported: `List`, `Data.Vector.Vector`, `Data.Map.Map`, `Data.IntMap.IntMap`
 
 By this way you can use these structures in postgresql-simple functions as such:
 
