@@ -1,2 +1,67 @@
 # postgis-trivial
-Haskell driver for PostGIS extension
+
+Haskell Postgresql/PostGIS DB Driver
+
+This library provides methods which allow direct use of user-defined
+Haskell data with Postgresql/PostGIS databases. It is based on [postgresql-simple](https://hackage.haskell.org/package/postgresql-simple) and can be used with other postgresql-simple capabilities.
+
+Main interface module `Database.PostGIS.Trivial` makes it possible
+to operate with various data enclosed in `Traversable` data structures.
+If the most inner data structures are `Unboxed` vectors, then use the functions and types in `Database.PostGIS.Trivial.Unboxed`. And if the most inner data structures are `Storable` vectors then use `Database.PostGIS.Trivial.Storable` module.
+
+## Synopsis
+
+### Default types
+
+- P2D for 2D points
+
+- P3DZ, P3DM for 3D points
+
+- P4D for points with z and m coordinates
+
+You can freely use them for your data.
+
+### User-defined types
+
+Ensure that user geometry data points is correctly translated into the internal points data as in the example
+
+```haskell
+{-# LANGUAGE TypeFamilies #-}
+
+data LatLon =
+        LatLon !Double !Double
+        deriving (Show, Eq)
+
+type instance Cast LatLon = P2D -- translate to inner 2D point
+
+instance Castable LatLon where -- specify translation
+    toPointND (LatLon y x) = Point2D x y
+    fromPointND (Point2D x y) = LatLon y x
+```
+
+Then any structure of type `Traversable t => t LatLon` can be interpreted as `LineString` or `MultiPoint`. Any structure of type
+`(Traversable t1, Traversable t2) => t2 (t1 LatLon)` can be interpreted as `Polygon` or `MultiLineString`. And any structure of type
+`(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))`
+can be interpreted as `MultiPolygon`.
+
+By this way you can use these structures in postgresql-simple functions as such:
+
+```haskell
+    ls = [LatLon 1 2, LatLon 1.5 2.5, LatLon 2.5 3, LatLon 1 2]
+    _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
+        (Only (LineString srid ls0))
+    [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
+    let LineString srid' ls0' = res
+```
+
+Or the same with suitable helper functions:
+
+```haskell
+    _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
+        (Only (putLS srid ls0))
+    [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
+    let (srid', ls0') = getLS res
+```
+
+
+

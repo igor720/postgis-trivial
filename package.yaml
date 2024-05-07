@@ -1,0 +1,94 @@
+name:       postgis-trivial
+version:    0.0.1.0
+github:     "igor720/postgis-trivial"
+license:    BSD3
+author:     "Igor Chudaev"
+maintainer: "igor720@gmail.com"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+- package.yaml
+- include/pgisConst.h
+
+# Metadata used when publishing your package
+synopsis:   PostGIS extention driver based on postgresql-simple package
+category:   Database driver
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description: Please see the README on GitHub at <https://github.com/igor720/postgis-trivial#README.md>
+
+dependencies:
+  - base >= 4.7 && < 5
+  - binary >= 0.7 && < 0.9
+  - bytestring > 0.9 && < 0.11
+  - bytestring-lexing >= 0.4 && < 0.6
+  - containers >= 0.6 && < 0.7
+  - cpu >= 0.1 && < 0.2
+  - data-binary-ieee754 >= 0.4 && < 0.5
+  - mtl >= 2.1 && < 2.3
+  - postgresql-simple >= 0.6 && < 0.7
+  - storable-record >= 0.0 && < 0.1
+  - vector >= 0.12 && < 0.13
+
+library:
+  exposed-modules:
+    - Database.Postgis.Trivial
+    - Database.Postgis.Trivial.Types
+    - Database.Postgis.Trivial.Cast
+    - Database.Postgis.Trivial.Traversable.PointND
+    - Database.Postgis.Trivial.Traversable.Geometry
+    - Database.Postgis.Trivial.Unboxed
+    - Database.Postgis.Trivial.Unboxed.PointND
+    - Database.Postgis.Trivial.Unboxed.Geometry
+    - Database.Postgis.Trivial.Storable
+    - Database.Postgis.Trivial.Storable.PointND
+    - Database.Postgis.Trivial.Storable.Geometry
+  other-modules:
+    - Database.Postgis.Trivial.PGISConst
+    - Database.Postgis.Trivial.Internal
+  source-dirs:
+    - src
+  default-extensions: NoImplicitPrelude
+  ghc-options:
+    - -Wall
+  include-dirs:
+    - include
+  install-includes:
+    - pgisConst.h
+
+### Uncomment Spec.hs (and comment SpecEmpty.hs) for testing on running PostGIS.
+### Further instructions are in Spec.hs.
+tests:
+  job-tests:
+    # main: Spec.hs
+    main: SpecEmpty.hs
+    other-modules:
+    - Database.Postgis.Trivial
+    - Database.Postgis.Trivial.Types
+    - Database.Postgis.Trivial.Cast
+    - Database.Postgis.Trivial.PGISConst
+    - Database.Postgis.Trivial.Internal
+    - Database.Postgis.Trivial.Traversable.PointND
+    - Database.Postgis.Trivial.Traversable.Geometry
+    - Database.Postgis.Trivial.Unboxed
+    - Database.Postgis.Trivial.Unboxed.PointND
+    - Database.Postgis.Trivial.Unboxed.Geometry
+    - Database.Postgis.Trivial.Storable
+    - Database.Postgis.Trivial.Storable.PointND
+    - Database.Postgis.Trivial.Storable.Geometry
+    - Tests.Traversable
+    - Tests.Unboxed
+    - Tests.Storable
+    source-dirs:
+    - src
+    - test
+    default-extensions:
+    - NoImplicitPrelude
+    ghc-options:
+    - -Wall
+    dependencies:
+    - postgis-trivial
+    - HUnit
