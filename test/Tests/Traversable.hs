@@ -16,6 +16,7 @@ import Test.HUnit
 import Database.PostgreSQL.Simple
 
 import Database.Postgis.Trivial
+import Data.ByteString (ByteString)
 
 
 data LatLon =
@@ -44,8 +45,8 @@ instance Castable (Double, Double) where
     toPointND (x, y) = Point2D x y
     fromPointND (Point2D x y) = (x, y)
 
-tInsSel :: Test
-tInsSel = TestList
+tInsSel :: ByteString -> Test
+tInsSel dbconn = TestList
     [ "geometry point (PointND)" ~: bracket
         (connectPostgreSQL dbconn) close
         (\conn -> do
@@ -103,9 +104,9 @@ tInsSel = TestList
                 ls0 = V.fromList [Point3DZ 1 2 0, Point3DZ 1.5 2.5 10, Point3DZ 2.5 3 20, Point3DZ 1 2 30]
             _ <- execute_ conn "TRUNCATE linestringZs"
             _ <- execute conn "INSERT INTO linestringZs (geom) VALUES (?)"
-                (Only (LineString srid ls0))
+                (Only (Geo (LineString srid ls0)))
             [Only res] <- query_ conn "SELECT * FROM linestringZs"
-            let LineString srid' ls0' = res
+            let Geo (LineString srid' ls0') = res
             _ <- execute_ conn "TRUNCATE linestringZs"
             length ls0'==length ls0 && srid'==srid && all (==True) (V.zipWith (==) ls0' ls0) @?= True
         )
@@ -177,8 +178,9 @@ tInsSel = TestList
             _ <- execute_ conn "TRUNCATE multipolygons"
             length mps0'==length mps0 && srid'==srid && all (==True) (zipWith (==) mps0' mps0) @?= True
         )
-    ] where
-        dbconn = "dbname=test"
+    ]
+    -- ] where
+        -- dbconn = "dbname=test"
 
 
 

@@ -4,15 +4,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ExistentialQuantification                            #-}
 {-# LANGUAGE InstanceSigs #-}
-{-# OPTIONS_GHC -Wno-orphans #-}
+-- {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Database.Postgis.Trivial.Types
     ( SRID
     , PointND (..)
     , Putter
     , Getter
+    , Geo (..)
     , Geometry (..)
-    , GeometryError(..)
+    , GeometryError (..)
     ) where
 
 import GHC.Base
@@ -55,17 +56,19 @@ class Typeable a => Geometry a where
     putGeometry :: Putter a
     getGeometry :: Get a
 
-instance Geometry g => ToField g where
-    toField = Escape . writeEWKB putGeometry
+newtype Geo g = Geo g
 
-instance Geometry g => FromField g where
+instance Geometry g => ToField (Geo g) where
+    toField (Geo g) = Escape . writeEWKB putGeometry $ g
+
+instance Geometry g => FromField (Geo g) where
     fromField f m = do
         typ <- typename f
         if typ /= "geometry"
             then returnError Incompatible f (show typ)
             else case m of
                 Nothing  -> returnError UnexpectedNull f ""
-                Just bs -> return $ readEWKB getGeometry bs
+                Just bs -> return $ Geo (readEWKB getGeometry bs)
 
 -- | Exeptions
 

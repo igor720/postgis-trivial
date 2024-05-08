@@ -59,12 +59,10 @@ library:
   install-includes:
     - pgisConst.h
 
-### Uncomment Spec.hs (and comment SpecEmpty.hs) for testing on running PostGIS.
-### Further instructions are in Spec.hs.
+### See Spec.hs for instructions of testing on running PostGIS.
 tests:
   job-tests:
-    # main: Spec.hs
-    main: SpecEmpty.hs
+    main: Spec.hs
     other-modules:
     - Database.Postgis.Trivial
     - Database.Postgis.Trivial.Types

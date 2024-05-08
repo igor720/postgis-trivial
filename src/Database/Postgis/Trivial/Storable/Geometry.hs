@@ -153,44 +153,44 @@ instance (Castable p, VS.Storable p, VS.Storable (Cast p),
 -- | Helpers
 
 -- | Point
-putPoint :: Castable p => SRID -> p -> Point p
-putPoint = Point
+putPoint :: Castable p => SRID -> p -> Geo (Point p)
+putPoint srid p = Geo (Point srid p)
 
-getPoint :: Castable p => Point p -> (SRID, p)
-getPoint (Point srid v) = (srid, v)
+getPoint :: Geo (Point p) -> (SRID, p)
+getPoint (Geo (Point srid p)) = (srid, p)
 
 -- | Linestring
-putLS :: SRID -> VS.Vector p -> LineString p
-putLS = LineString
+putLS :: SRID -> VS.Vector p -> Geo (LineString p)
+putLS srid ps = Geo (LineString srid ps)
 
-getLS :: LineString p -> (SRID, VS.Vector p)
-getLS (LineString srid vs) = (srid, vs)
+getLS :: Geo (LineString p) -> (SRID, VS.Vector p)
+getLS (Geo (LineString srid vs)) = (srid, vs)
 
 -- | Polygon
-putPoly :: SRID -> t2 (VS.Vector p) -> Polygon t2 p
-putPoly = Polygon
+putPoly :: SRID -> t2 (VS.Vector p) -> Geo (Polygon t2 p)
+putPoly srid pss = Geo (Polygon srid pss)
 
-getPoly :: Polygon t2 p -> (SRID, t2 (VS.Vector p))
-getPoly (Polygon srid vss) = (srid, vss)
+getPoly :: Geo (Polygon t2 p) -> (SRID, t2 (VS.Vector p))
+getPoly (Geo (Polygon srid vss)) = (srid, vss)
 
 -- | MultiPoint
-putMPoint :: SRID -> VS.Vector p -> MultiPoint p
-putMPoint = MultiPoint
+putMPoint :: SRID -> VS.Vector p -> Geo (MultiPoint p)
+putMPoint srid ps = Geo (MultiPoint srid ps)
 
-getMPoint :: MultiPoint p -> (SRID, VS.Vector p)
-getMPoint (MultiPoint srid vs) = (srid, vs)
+getMPoint :: Geo (MultiPoint p) -> (SRID, VS.Vector p)
+getMPoint (Geo (MultiPoint srid vs)) = (srid, vs)
 
 -- | MultiLineString
-putMLS :: SRID -> t2 (VS.Vector p) -> MultiLineString t2 p
-putMLS = MultiLineString
+putMLS :: SRID -> t2 (VS.Vector p) -> Geo (MultiLineString t2 p)
+putMLS srid pss = Geo (MultiLineString srid pss)
 
-getMLS :: MultiLineString t2 p -> (SRID, t2 (VS.Vector p))
-getMLS (MultiLineString srid vs) = (srid, vs)
+getMLS :: Geo (MultiLineString t2 p) -> (SRID, t2 (VS.Vector p))
+getMLS (Geo (MultiLineString srid vs)) = (srid, vs)
 
 -- | MultiPolygon
-putMPoly :: SRID -> t3 (t2 (VS.Vector p)) -> MultiPolygon t3 t2 p
-putMPoly = MultiPolygon
+putMPoly :: SRID -> t3 (t2 (VS.Vector p)) -> Geo (MultiPolygon t3 t2 p)
+putMPoly srid psss = Geo (MultiPolygon srid psss)
 
-getMPoly :: MultiPolygon t3 t2 p -> (SRID, t3 (t2 (VS.Vector p)))
-getMPoly (MultiPolygon srid vs) = (srid, vs)
+getMPoly :: Geo (MultiPolygon t3 t2 p) -> (SRID, t3 (t2 (VS.Vector p)))
+getMPoly (Geo (MultiPolygon srid vs)) = (srid, vs)
 

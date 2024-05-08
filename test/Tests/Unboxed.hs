@@ -15,6 +15,7 @@ import Test.HUnit
 import Database.PostgreSQL.Simple
 
 import Database.Postgis.Trivial.Unboxed
+import Data.ByteString (ByteString)
 
 -- type InnerData = VU.Vector P2D
 
@@ -37,8 +38,8 @@ tMutability = TestList
         ~?= VU.fromList [Point2D 10 2, Point2D 1.5 2.5, Point2D 2 13, Point2D 1 2]
     ]
 
-tInsSel :: Test
-tInsSel = TestList
+tInsSel :: ByteString -> Test
+tInsSel dbconn = TestList
     [ "linestring (2D, Unboxed Vector)" ~: bracket
         (connectPostgreSQL dbconn) close
         (\conn -> do
@@ -96,8 +97,7 @@ tInsSel = TestList
             _ <- execute_ conn "TRUNCATE multilinestrings"
             length mls0'==length mls0 && srid'==srid && mls0'==mls0 @?= True
         )
-    ] where
-        dbconn = "dbname=test"
+    ]
 
 
 

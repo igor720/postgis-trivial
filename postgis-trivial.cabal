@@ -67,7 +67,7 @@ library
 
 test-suite job-tests
   type: exitcode-stdio-1.0
-  main-is: SpecEmpty.hs
+  main-is: Spec.hs
   other-modules:
       Database.Postgis.Trivial
       Database.Postgis.Trivial.Types

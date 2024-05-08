@@ -41,17 +41,16 @@ instance Castable LatLon where -- specify translation
 
 Then structure of type `Traversable t => t LatLon` can be interpreted as `LineString` or `MultiPoint`. Any structure of type
 `(Traversable t1, Traversable t2) => t2 (t1 LatLon)` can be interpreted as `Polygon` or `MultiLineString`. And any structure of type
-`(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))`
-can be interpreted as `MultiPolygon`. Currently, only following `Traversable`s are supported: `List`, `Data.Vector.Vector`, `Data.Map.Map`, `Data.IntMap.IntMap`
+`(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))` can be interpreted as `MultiPolygon`. Currently, only following `Traversable`s are supported: `List`, `Data.Vector.Vector`, `Data.Map.Map`, `Data.IntMap.IntMap`
 
 By this way you can use these structures in postgresql-simple functions as such:
 
 ```haskell
     ls = [LatLon 1 2, LatLon 1.5 2.5, LatLon 2.5 3, LatLon 1 2]
     _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
-        (Only (LineString srid ls))
+        (Only (Geo (LineString srid ls)))
     [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
-    let LineString srid' ls0' = res
+    let Geo (LineString srid' ls') = res
 ```
 
 Or the same with suitable helper functions:
@@ -60,7 +59,7 @@ Or the same with suitable helper functions:
     _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
         (Only (putLS srid ls))
     [Only res] <- query_ conn "SELECT * FROM linestrings LIMIT 1"
-    let (srid', ls0') = getLS res
+    let (srid', ls') = getLS res
 ```
 
 
