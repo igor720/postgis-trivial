@@ -39,11 +39,11 @@ instance Storable GeoDuo where
    peek = Store.peek storeGeoDuo
    poke = Store.poke storeGeoDuo
 
-type instance Cast GeoDuo = P2D
+type instance Cast GeoDuo = P2DS
 
 instance Castable GeoDuo where
-    toPointND (GeoDuo y x) = Point2D x y
-    fromPointND (Point2D x y) = GeoDuo y x
+    toPointND (GeoDuo y x) = Point2DS x y
+    fromPointND (Point2DS x y) = GeoDuo y x
 
 type SomeData = VS.Vector GeoDuo
 
@@ -67,25 +67,25 @@ instance Storable GeoTrio where
    peek = Store.peek storeGeoTrio
    poke = Store.poke storeGeoTrio
 
-type instance Cast GeoTrio = P3DZ
+type instance Cast GeoTrio = P3DZS
 
 instance Castable GeoTrio where
-    toPointND (GeoTrio x y z) = Point3DZ x y z
-    fromPointND (Point3DZ x y z) = GeoTrio x y z
+    toPointND (GeoTrio x y z) = Point3DZS x y z
+    fromPointND (Point3DZS x y z) = GeoTrio x y z
 
 type SomeDataZ = VS.Vector GeoTrio
 
 tMutability ::Test
 tMutability = TestList
     [ "safe update" ~:
-        VS.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2] VS.//
-            [(2, Point2D 2 13), (0, Point2D 10 2)]
-        ~?= VS.fromList [Point2D 10 2, Point2D 1.5 2.5, Point2D 2 13, Point2D 1 2]
+        VS.fromList [Point2DS 1 2, Point2DS 1.5 2.5, Point2DS 2.5 3, Point2DS 1 2] VS.//
+            [(2, Point2DS 2 13), (0, Point2DS 10 2)]
+        ~?= VS.fromList [Point2DS 10 2, Point2DS 1.5 2.5, Point2DS 2 13, Point2DS 1 2]
     , "unsafe update" ~:
         VS.unsafeUpd
-            (VS.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2])
-            [(2, Point2D 2 13), (0, Point2D 10 2)]
-        ~?= VS.fromList [Point2D 10 2, Point2D 1.5 2.5, Point2D 2 13, Point2D 1 2]
+            (VS.fromList [Point2DS 1 2, Point2DS 1.5 2.5, Point2DS 2.5 3, Point2DS 1 2])
+            [(2, Point2DS 2 13), (0, Point2DS 10 2)]
+        ~?= VS.fromList [Point2DS 10 2, Point2DS 1.5 2.5, Point2DS 2 13, Point2DS 1 2]
     ]
 
 tInsSel :: ByteString -> Test
@@ -94,7 +94,7 @@ tInsSel dbconn = TestList
         (connectPostgreSQL dbconn) close
         (\conn -> do
             let srid = Just 3785 :: SRID
-                ls0 = VS.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2]
+                ls0 = VS.fromList [Point2DS 1 2, Point2DS 1.5 2.5, Point2DS 2.5 3, Point2DS 1 2]
             _ <- execute_ conn "TRUNCATE linestrings"
             _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
                 (Only (putLS srid ls0))

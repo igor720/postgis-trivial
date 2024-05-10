@@ -19,23 +19,23 @@ import Data.ByteString (ByteString)
 
 -- type InnerData = VU.Vector P2D
 
-type instance Cast (Double, Double, Double) = P3DZ
+type instance Cast (Double, Double, Double) = P3DZU
 instance Castable (Double, Double, Double) where
-    toPointND (x, y, z) = Point3DZ x y z
-    fromPointND (Point3DZ x y z) = (x, y, z)
+    toPointND (x, y, z) = Point3DZU x y z
+    fromPointND (Point3DZU x y z) = (x, y, z)
 type SomeDataZ = VU.Vector (Double, Double, Double)
 
 tMutability :: Test
 tMutability = TestList
     [ "safe update" ~:
-        VU.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2] VU.//
-            [(2, Point2D 2 13), (0, Point2D 10 2)]
-        ~?= VU.fromList [Point2D 10 2, Point2D 1.5 2.5, Point2D 2 13, Point2D 1 2]
+        VU.fromList [Point2DU 1 2, Point2DU 1.5 2.5, Point2DU 2.5 3, Point2DU 1 2] VU.//
+            [(2, Point2DU 2 13), (0, Point2DU 10 2)]
+        ~?= VU.fromList [Point2DU 10 2, Point2DU 1.5 2.5, Point2DU 2 13, Point2DU 1 2]
     , "unsafe update" ~:
         VU.unsafeUpd
-            (VU.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2])
-            [(2, Point2D 2 13), (0, Point2D 10 2)]
-        ~?= VU.fromList [Point2D 10 2, Point2D 1.5 2.5, Point2D 2 13, Point2D 1 2]
+            (VU.fromList [Point2DU 1 2, Point2DU 1.5 2.5, Point2DU 2.5 3, Point2DU 1 2])
+            [(2, Point2DU 2 13), (0, Point2DU 10 2)]
+        ~?= VU.fromList [Point2DU 10 2, Point2DU 1.5 2.5, Point2DU 2 13, Point2DU 1 2]
     ]
 
 tInsSel :: ByteString -> Test
@@ -44,7 +44,7 @@ tInsSel dbconn = TestList
         (connectPostgreSQL dbconn) close
         (\conn -> do
             let srid = Just 3785 :: SRID
-                ls0 = VU.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2]
+                ls0 = VU.fromList [Point2DU 1 2, Point2DU 1.5 2.5, Point2DU 2.5 3, Point2DU 1 2]
             _ <- execute_ conn "TRUNCATE linestrings"
             _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
                 (Only (putLS srid ls0))
@@ -58,7 +58,7 @@ tInsSel dbconn = TestList
         (connectPostgreSQL dbconn) close
         (\conn -> do
             let srid = Just 3785 :: SRID
-                ls0 = VU.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2]
+                ls0 = VU.fromList [Point2DU 1 2, Point2DU 1.5 2.5, Point2DU 2.5 3, Point2DU 1 2]
             _ <- execute_ conn "TRUNCATE linestrings"
             _ <- execute conn "INSERT INTO linestrings (geom) VALUES (?)"
                 (Only (putLS srid ls0))
@@ -86,9 +86,9 @@ tInsSel dbconn = TestList
         (\conn -> do
             let srid = Just 3785 :: SRID
                 mls0 =
-                    [ VU.fromList [Point2D 1 2, Point2D 1.5 2.5, Point2D 2.5 3, Point2D 1 2]
+                    [ VU.fromList [Point2DU 1 2, Point2DU 1.5 2.5, Point2DU 2.5 3, Point2DU 1 2]
                     , VU.fromList []
-                    , VU.fromList [Point2D 1 2] ]
+                    , VU.fromList [Point2DU 1 2] ]
             _ <- execute_ conn "TRUNCATE multilinestrings"
             _ <- execute conn "INSERT INTO multilinestrings (geom) VALUES (?)"
                 (Only (putMLS srid mls0))

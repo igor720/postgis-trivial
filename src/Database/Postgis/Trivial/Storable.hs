@@ -1,7 +1,9 @@
--- | Makes it possible to operate with various data enclosed in
--- Traversable data structures with the most inner Storable Vectors.
+-- | Makes it possible for PostGIS to operate with various data enclosed in
+-- Traversable data structures with Storable Vectors as the most
+-- inner structures.
 --
--- Example of suitable data type for LineString and Polygon
+-- Example of suitable data types for LineString and Polygon
+--
 -- > {-# LANGUAGE TypeFamilies #-}
 -- >
 -- > import qualified Data.Vector.Storable as VS

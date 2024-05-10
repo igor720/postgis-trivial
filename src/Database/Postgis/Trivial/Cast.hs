@@ -8,7 +8,6 @@ module Database.Postgis.Trivial.Cast where
 import GHC.Base hiding ( foldr )
 import GHC.Num ( Num((+)) )
 import Control.Monad ( replicateM, mapM_ )
-import Control.Exception ( throw )
 import Data.Functor ( (<$>), (<&>) )
 import Data.Typeable    ( Typeable )
 import Data.Foldable    ( Foldable(..) )
@@ -22,15 +21,13 @@ import Database.Postgis.Trivial.Types
 import Database.Postgis.Trivial.Internal
 
 
+-- | Conversion type family
 type family Cast p
 
+-- | Conversion procedures
 class (Typeable p, PointND (Cast p)) => Castable p where
     toPointND :: p -> Cast p
-    toPointND _ = throw $
-        GeometryError "no convertion from user data type to PointND"
     fromPointND :: Cast p -> p
-    fromPointND _ = throw $
-        GeometryError "no converttion from PointND to user data type"
 
 -- | Translator of Traversables
 class (Castable p, Traversable t, Typeable t) => Trans t p where
@@ -38,6 +35,7 @@ class (Castable p, Traversable t, Typeable t) => Trans t p where
     transTo vs = toPointND <$> vs
     transFrom :: t (Cast p) -> t p
     transFrom vs = fromPointND <$> vs
+    -- {-# MINIMAL transTo | transFrom #-}
 
 instance Castable p => Trans [] p where
 instance Castable p => Trans V.Vector p where
@@ -61,6 +59,7 @@ class Traversable t => GeoChain t where
         putChainLen $ count vs
         mapM_ putPointND vs
     getChain :: (Traversable t, PointND a) => HeaderGetter (t a)
+    -- {-# MINIMAL count | putChain #-}
 
 instance GeoChain V.Vector where
     count = V.length

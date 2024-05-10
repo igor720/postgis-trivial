@@ -1,8 +1,9 @@
--- | Makes it possible to operate with various data enclosed in
+-- | Makes it possible for PostGIS to operate with various data enclosed in
 -- Traversable data structures.
 --
 --
--- Example of suitable data type for LineString and Polygon
+-- Example of suitable data types for LineString and Polygon
+--
 -- > {-# LANGUAGE TypeFamilies #-}
 -- >
 -- > data LatLon =

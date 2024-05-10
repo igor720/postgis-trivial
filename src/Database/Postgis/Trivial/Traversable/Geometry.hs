@@ -126,47 +126,51 @@ instance (Repl t3 (t2 (t1 (Cast p))), Repl t2 (t1 (Cast p)), GeoChain t3, GeoCha
                 GeometryError "invalid data for multipolygon geometry"
         return (MultiPolygon srid ((transFrom <$>) <$> vsss::t3 (t2 (t1 p))))
 
--- Helpers
-
--- | Point
+-- | Point putter
 putPoint :: Castable p => SRID -> p -> Geo (Point p)
 putPoint srid p = Geo (Point srid p)
 
+-- | Point getter
 getPoint :: Geo (Point p) -> (SRID, p)
 getPoint (Geo (Point srid p)) = (srid, p)
 
--- | Linestring
+-- | Linestring putter
 putLS :: SRID -> t p -> Geo (LineString t p)
 putLS srid ps = Geo (LineString srid ps)
 
+-- | LineString getter
 getLS :: Geo (LineString t p) -> (SRID, t p)
 getLS (Geo (LineString srid vs)) = (srid, vs)
 
--- | Polygon
+-- | Polygon putter
 putPoly :: SRID -> t2 (t1 p) -> Geo (Polygon t2 t1 p)
 putPoly srid pss = Geo (Polygon srid pss)
 
+-- | Polygon getter
 getPoly :: Geo (Polygon t2 t1 p) -> (SRID, t2 (t1 p))
 getPoly (Geo (Polygon srid vss)) = (srid, vss)
 
--- | MultiPoint
+-- | MultiPoint putter
 putMPoint :: SRID -> t p -> Geo (MultiPoint t p)
 putMPoint srid ps = Geo (MultiPoint srid ps)
 
+-- | MultiPoint getter
 getMPoint :: Geo (MultiPoint t p) -> (SRID, t p)
 getMPoint (Geo (MultiPoint srid vs)) = (srid, vs)
 
--- | MultiLineString
+-- | MultiLineString putter
 putMLS :: SRID -> t2 (t1 p) -> Geo (MultiLineString t2 t1 p)
 putMLS srid pss = Geo (MultiLineString srid pss)
 
+-- | MultiLineString getter
 getMLS :: Geo (MultiLineString t2 t1 p) -> (SRID, t2 (t1 p))
 getMLS (Geo (MultiLineString srid vs)) = (srid, vs)
 
--- | MultiPolygon
+-- | MultiPolygon putter
 putMPoly :: SRID -> t3 (t2 (t1 p)) -> Geo (MultiPolygon t3 t2 t1 p)
 putMPoly srid psss = Geo (MultiPolygon srid psss)
 
+-- | MultiPolygon getter
 getMPoly :: Geo (MultiPolygon t3 t2 t1 p) -> (SRID, t3 (t2 (t1 p)))
 getMPoly (Geo (MultiPolygon srid vs)) = (srid, vs)
 

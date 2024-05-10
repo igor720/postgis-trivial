@@ -17,26 +17,31 @@ import Database.Postgis.Trivial.Internal
 import Database.Postgis.Trivial.Cast
 
 
--- | Translator of Unboxed vectors
+-- | Translator of Unboxed vectors (direct)
 transToS :: (Castable p, VS.Storable p, VS.Storable (Cast p)) =>
         VS.Vector p -> VS.Vector (Cast p)
 transToS = VS.map toPointND
+
+-- | Translator of Unboxed vectors (reverse)
 transFromS :: (Castable p, VS.Storable p, VS.Storable (Cast p)) =>
         VS.Vector (Cast p) -> VS.Vector p
 transFromS = VS.map fromPointND
 
+-- | Chain putter
 -- | Point chain is a base structural component of various geometries
 putChainS :: (PointND a, VS.Storable a) => Putter (VS.Vector a)
 putChainS vs = do
         putChainLen $ VS.length vs
         VS.mapM_ putPointND vs
+
+-- | Chain getter
 getChainS :: (PointND a, VS.Storable a) => HeaderGetter (VS.Vector a)
 getChainS = getChainLen >>= (`VS.replicateM` getPointND)
 
 -- | Point geometry
 data Point p = Point SRID p
 
-instance Castable p => Geometry (Point p) where
+instance (Castable p, VS.Storable p) => Geometry (Point p) where
     putGeometry (Point srid v) = do
         putHeader srid pgisPoint (dimProps @(Cast p))
         putPointND (toPointND v::Cast p)
@@ -150,47 +155,51 @@ instance (Castable p, VS.Storable p, VS.Storable (Cast p),
         return (MultiPolygon srid ((transFromS <$>) <$>
             vsss::t3 (t2 (VS.Vector p))))
 
--- | Helpers
-
--- | Point
+-- | Point putter
 putPoint :: Castable p => SRID -> p -> Geo (Point p)
 putPoint srid p = Geo (Point srid p)
 
+-- | Point getter
 getPoint :: Geo (Point p) -> (SRID, p)
 getPoint (Geo (Point srid p)) = (srid, p)
 
--- | Linestring
+-- | Linestring putter
 putLS :: SRID -> VS.Vector p -> Geo (LineString p)
 putLS srid ps = Geo (LineString srid ps)
 
+-- | LineString getter
 getLS :: Geo (LineString p) -> (SRID, VS.Vector p)
 getLS (Geo (LineString srid vs)) = (srid, vs)
 
--- | Polygon
+-- | Polygon putter
 putPoly :: SRID -> t2 (VS.Vector p) -> Geo (Polygon t2 p)
 putPoly srid pss = Geo (Polygon srid pss)
 
+-- | Polygon getter
 getPoly :: Geo (Polygon t2 p) -> (SRID, t2 (VS.Vector p))
 getPoly (Geo (Polygon srid vss)) = (srid, vss)
 
--- | MultiPoint
+-- | MultiPoint putter
 putMPoint :: SRID -> VS.Vector p -> Geo (MultiPoint p)
 putMPoint srid ps = Geo (MultiPoint srid ps)
 
+-- | MultiPoint getter
 getMPoint :: Geo (MultiPoint p) -> (SRID, VS.Vector p)
 getMPoint (Geo (MultiPoint srid vs)) = (srid, vs)
 
--- | MultiLineString
+-- | MultiLineString putter
 putMLS :: SRID -> t2 (VS.Vector p) -> Geo (MultiLineString t2 p)
 putMLS srid pss = Geo (MultiLineString srid pss)
 
+-- | MultiLineString getter
 getMLS :: Geo (MultiLineString t2 p) -> (SRID, t2 (VS.Vector p))
 getMLS (Geo (MultiLineString srid vs)) = (srid, vs)
 
--- | MultiPolygon
+-- | MultiPolygon putter
 putMPoly :: SRID -> t3 (t2 (VS.Vector p)) -> Geo (MultiPolygon t3 t2 p)
 putMPoly srid psss = Geo (MultiPolygon srid psss)
 
+-- | MultiPolygon getter
 getMPoly :: Geo (MultiPolygon t3 t2 p) -> (SRID, t3 (t2 (VS.Vector p)))
 getMPoly (Geo (MultiPolygon srid vs)) = (srid, vs)
 

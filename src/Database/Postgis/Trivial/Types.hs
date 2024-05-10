@@ -1,10 +1,11 @@
+
+
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ExistentialQuantification                            #-}
 {-# LANGUAGE InstanceSigs #-}
--- {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Database.Postgis.Trivial.Types
     ( SRID
@@ -51,11 +52,12 @@ type Getter h = ReaderT h Get
 readEWKB :: Get a -> BS.ByteString -> a
 readEWKB getter bs = runGet getter (BL.fromStrict bs)
 
--- | Type class which defines geometry 'to/from' binary translations
+-- | Type class which defines geometry's 'to/from' binary convertions
 class Typeable a => Geometry a where
     putGeometry :: Putter a
     getGeometry :: Get a
 
+-- | Wrapper for geomety types (preventing collisions with default instances)
 newtype Geo g = Geo g
 
 instance Geometry g => ToField (Geo g) where
@@ -91,6 +93,7 @@ instance Show SomeGeometryException where
 instance Exception SomeGeometryException where
     displayException (SomeGeometryException e) = displayException e
 
+-- | Exception for Geometry operations
 newtype GeometryError = GeometryError {
     geoMessage :: String
     } deriving (Eq, Show, Typeable)
