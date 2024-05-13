@@ -40,24 +40,24 @@ class Typeable a => PointND a where
     components :: a -> (Double, Double, Maybe Double, Maybe Double)
     fromComponents :: (Double, Double, Maybe Double, Maybe Double) -> a
 
--- | Binary Putter
+-- | Binary putter
 type Putter a = a -> Put
 
 writeEWKB :: Putter a -> a -> BS.ByteString
 writeEWKB putter = BL.toStrict . runPut . putter
 
--- | Binary Getter
+-- | Binary getter
 type Getter h = ReaderT h Get
 
 readEWKB :: Get a -> BS.ByteString -> a
 readEWKB getter bs = runGet getter (BL.fromStrict bs)
 
--- | Type class which defines geometry's 'to/from' binary convertions
+-- | Type class which defines geometry to/from binary form convertions
 class Typeable a => Geometry a where
     putGeometry :: Putter a
     getGeometry :: Get a
 
--- | Wrapper for geomety types (preventing collisions with default instances)
+-- | Wrapper for geomety types (prevents collisions with default instances)
 newtype Geo g = Geo g
 
 instance Geometry g => ToField (Geo g) where
@@ -71,8 +71,6 @@ instance Geometry g => FromField (Geo g) where
             else case m of
                 Nothing  -> returnError UnexpectedNull f ""
                 Just bs -> return $ Geo (readEWKB getGeometry bs)
-
--- | Exeptions
 
 -- | Geometry exceptions
 data SomeGeometryException = forall e. Exception e => SomeGeometryException e
@@ -93,7 +91,7 @@ instance Show SomeGeometryException where
 instance Exception SomeGeometryException where
     displayException (SomeGeometryException e) = displayException e
 
--- | Exception for Geometry operations
+-- | Exception for operations with geometries
 newtype GeometryError = GeometryError {
     geoMessage :: String
     } deriving (Eq, Show, Typeable)

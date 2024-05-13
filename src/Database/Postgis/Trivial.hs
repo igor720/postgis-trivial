@@ -1,8 +1,7 @@
--- | Makes it possible for PostGIS to operate with various data enclosed in
+-- | Allows PostGIS to work with various data enclosed in
 -- Traversable data structures.
 --
---
--- Example of suitable data types for LineString and Polygon
+-- Example of suitable data types for LineString and Polygon.
 --
 -- > {-# LANGUAGE TypeFamilies #-}
 -- >
@@ -16,8 +15,8 @@
 -- >     toPointND (LatLon y x) = Point2D x y
 -- >     fromPointND (Point2D x y) = LatLon y x
 -- >
--- > type LineStringData = [(Double, Double, Double)]
--- > type PolygonData = [[(Double, Double, Double)], [(Double, Double, Double)]]
+-- > type LineStringData = [LatLon]
+-- > type PolygonData = [[LatLon], [LatLon]]
 --
 
 module Database.Postgis.Trivial (

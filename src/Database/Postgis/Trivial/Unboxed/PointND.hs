@@ -29,7 +29,7 @@ uncurry4 f (a, b, c, d) = f a b c d
 
 -- P2D =========================================================================
 
--- | Inner Unbox 2D point
+-- | Default Unbox 2D point
 data P2DU = Point2DU
         {-# UNPACK #-} !Double
         {-# UNPACK #-} !Double
@@ -92,7 +92,7 @@ instance PointND P2DU where
 
 -- P3DZ ========================================================================
 
--- | Inner Unbox 3D point with Z component
+-- | Default Unbox 3D point with Z component
 data P3DZU = Point3DZU
         {-# UNPACK #-} !Double
         {-# UNPACK #-} !Double
@@ -158,7 +158,7 @@ instance PointND P3DZU where
 
 -- P3DM ========================================================================
 
--- | Inner Unbox 3D point with M component
+-- | Default Unbox 3D point with M component
 data P3DMU = Point3DMU
         {-# UNPACK #-} !Double
         {-# UNPACK #-} !Double
@@ -224,7 +224,7 @@ instance PointND P3DMU where
 
 -- P4D =========================================================================
 
--- | Inner Unbox point with Z and M component
+-- | Default Unbox point with Z and M component
 data P4DU = Point4DU
         {-# UNPACK #-} !Double
         {-# UNPACK #-} !Double

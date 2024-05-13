@@ -2,12 +2,9 @@
 
 Haskell Postgresql/PostGIS DB Driver
 
-This library provides methods which allow direct use of user-defined
-Haskell data with Postgresql/PostGIS databases. It is based on [postgresql-simple](https://hackage.haskell.org/package/postgresql-simple) and can be used with other postgresql-simple capabilities.
+This library provides methods which allow direct use of user-defined Haskell data with Postgresql/PostGIS databases. It is based on [postgresql-simple](https://hackage.haskell.org/package/postgresql-simple) and can be used with other postgresql-simple capabilities.
 
-Main interface module `Database.PostGIS.Trivial` makes it possible
-to operate with various data enclosed in `Traversable` data structures.
-If the most inner data structures are `Unboxed` vectors, then use the functions and types in `Database.PostGIS.Trivial.Unboxed`. And if the most inner data structures are `Storable` vectors then use `Database.PostGIS.Trivial.Storable` module.
+Main interface module `Database.PostGIS.Trivial` allows PostGIS to work with various data enclosed in `Traversable` data structures. If the most inner data structures are `Unboxed` vectors, then use the functions and types in `Database.PostGIS.Trivial.Unboxed`. And, if the most inner data structures are `Storable` vectors then use `Database.PostGIS.Trivial.Storable` module.
 
 ## Synopsis
 
@@ -23,7 +20,7 @@ You can freely use them for your data.
 
 ### User-defined types
 
-Ensure that user geometry data points is correctly translated into the internal points data as in the example
+Ensure that user geometry data points is correctly translated into the internal default points data as in the example
 
 ```haskell
 {-# LANGUAGE TypeFamilies #-}
@@ -41,7 +38,7 @@ instance Castable LatLon where -- specify translation
 
 Then structure of type `Traversable t => t LatLon` can be interpreted as `LineString` or `MultiPoint`. Any structure of type
 `(Traversable t1, Traversable t2) => t2 (t1 LatLon)` can be interpreted as `Polygon` or `MultiLineString`. And any structure of type
-`(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))` can be interpreted as `MultiPolygon`. Currently, only following `Traversable`s are supported: `List`, `Data.Vector.Vector`, `Data.Map.Map`, `Data.IntMap.IntMap`
+`(Traversable t1, Traversable t2, Traversable t3) => t3 (t2 (t1 LatLon))` can be interpreted as `MultiPolygon`. Currently, only following `Traversable`s are supported: `List`, `Data.Vector.Vector`. `Data.IntMap.IntMap` and `Data.Map.Map` have partial support.
 
 By this way you can use these structures in postgresql-simple functions as such:
 

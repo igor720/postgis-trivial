@@ -29,7 +29,6 @@ transFromU :: (Castable p, VU.Unbox p, VU.Unbox (Cast p)) =>
 transFromU = VU.map fromPointND
 
 -- | Chain putter
--- | Point chain is a base structural component of various geometries
 putChainU :: (PointND a, VU.Unbox a) => Putter (VU.Vector a)
 putChainU vs = do
         putChainLen $ VU.length vs

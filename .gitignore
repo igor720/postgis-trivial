@@ -25,3 +25,5 @@ Makefile
 stack.yaml
 stack.yaml.lock
 had
+.dist-docs.*
+dist-newstyle

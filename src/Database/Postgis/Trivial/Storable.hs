@@ -1,4 +1,4 @@
--- | Makes it possible for PostGIS to operate with various data enclosed in
+-- | Allows PostGIS to work with various data enclosed in
 -- Traversable data structures with Storable Vectors as the most
 -- inner structures.
 --

@@ -24,7 +24,7 @@ liftA4 f a b c d = liftA3 f a b c <*> d
 
 -- P2DS =========================================================================
 
--- | Inner Storable 2D point
+-- | Default Storable 2D point
 data P2DS = Point2DS
         { xP2DS :: {-# UNPACK #-} !Double
         , yP2DS :: {-# UNPACK #-} !Double
@@ -51,7 +51,7 @@ instance PointND P2DS where
 
 -- P3DZ ========================================================================
 
--- | Inner Storable 3D point with Z component
+-- | Default Storable 3D point with Z component
 data P3DZS = Point3DZS
         { xP3DZ :: {-# UNPACK #-} !Double
         , yP3DZ :: {-# UNPACK #-} !Double
@@ -80,7 +80,7 @@ instance PointND P3DZS where
 
 -- P3DM ========================================================================
 
--- | Inner Storable 3D point with M component
+-- | Default Storable 3D point with M component
 data P3DMS = Point3DMS
         { xP3DM :: {-# UNPACK #-} !Double
         , yP3DM :: {-# UNPACK #-} !Double
@@ -109,7 +109,7 @@ instance PointND P3DMS where
 
 -- P4D =========================================================================
 
--- | Inner Storable point with Z and M component
+-- | Default Storable point with Z and M component
 data P4DS = Point4DS
         { xP4D :: {-# UNPACK #-} !Double
         , yP4D :: {-# UNPACK #-} !Double

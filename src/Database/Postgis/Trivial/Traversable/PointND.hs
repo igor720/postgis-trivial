@@ -10,7 +10,7 @@ import Database.Postgis.Trivial.Types
 import Database.Postgis.Trivial.Cast
 
 
--- | Inner 2D point
+-- | Default 2D point
 data P2D = Point2D
         { xP2D :: {-# UNPACK #-} !Double
         , yP2D :: {-# UNPACK #-} !Double
@@ -23,7 +23,7 @@ instance PointND P2D where
     fromComponents _ = throw $
         GeometryError "invalid transition from user data type to Point2D"
 
--- | Inner 3D point with Z component
+-- | Default 3D point with Z component
 data P3DZ = Point3DZ
         { xP3DZ :: {-# UNPACK #-} !Double
         , yP3DZ :: {-# UNPACK #-} !Double
@@ -37,7 +37,7 @@ instance PointND P3DZ where
     fromComponents _ = throw $
         GeometryError "invalid transition from user data type to Point3DZ"
 
--- | Inner 3D point with M component
+-- | Default 3D point with M component
 data P3DM = Point3DM
         { xP3DM :: {-# UNPACK #-} !Double
         , yP3DM :: {-# UNPACK #-} !Double
@@ -51,7 +51,7 @@ instance PointND P3DM where
     fromComponents _ = throw $
         GeometryError "invalid transition from user data type to Point2DM"
 
--- | Inner point with Z and M component
+-- | Default point with Z and M component
 data P4D = Point4D
         { xP4D :: {-# UNPACK #-} !Double
         , yP4D :: {-# UNPACK #-} !Double

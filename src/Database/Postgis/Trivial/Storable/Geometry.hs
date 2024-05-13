@@ -28,7 +28,6 @@ transFromS :: (Castable p, VS.Storable p, VS.Storable (Cast p)) =>
 transFromS = VS.map fromPointND
 
 -- | Chain putter
--- | Point chain is a base structural component of various geometries
 putChainS :: (PointND a, VS.Storable a) => Putter (VS.Vector a)
 putChainS vs = do
         putChainLen $ VS.length vs

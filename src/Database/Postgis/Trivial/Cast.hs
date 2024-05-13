@@ -21,10 +21,10 @@ import Database.Postgis.Trivial.Types
 import Database.Postgis.Trivial.Internal
 
 
--- | Conversion type family
+-- | 'Type cast' type family
 type family Cast p
 
--- | Conversion procedures
+-- | 'Type cast' procedures
 class (Typeable p, PointND (Cast p)) => Castable p where
     toPointND :: p -> Cast p
     fromPointND :: Cast p -> p
@@ -35,14 +35,13 @@ class (Castable p, Traversable t, Typeable t) => Trans t p where
     transTo vs = toPointND <$> vs
     transFrom :: t (Cast p) -> t p
     transFrom vs = fromPointND <$> vs
-    -- {-# MINIMAL transTo | transFrom #-}
 
 instance Castable p => Trans [] p where
 instance Castable p => Trans V.Vector p where
 instance (Castable p, Typeable k) => Trans (M.Map k) p where
 instance Castable p => Trans IM.IntMap p where
 
--- | Replication procedure for various Traversables
+-- | Replication procedure for different Traversables
 class (Traversable t, Typeable t) => Repl t b where
     repl :: Int -> HeaderGetter b -> HeaderGetter (t b)
 
@@ -51,7 +50,7 @@ instance Repl [] b where
 instance Repl V.Vector b where
     repl = V.replicateM
 
--- | Point chain is a base structural component of various geometries
+-- | Point chain is a base structural component of geometries
 class Traversable t => GeoChain t where
     count :: t p -> Int
     putChain :: PointND a => Putter (t a)
