@@ -10,7 +10,7 @@
 --      CREATE TABLE IF NOT EXISTS polygons         (geom     geometry(POLYGON, 3785));
 --      CREATE TABLE IF NOT EXISTS multipoints      (geom     geometry(MULTIPOINT, 3785));
 --      CREATE TABLE IF NOT EXISTS multilinestrings (geom     geometry(MULTILINESTRING, 3785));
---      CREATE TABLE IF NOT EXISTS multipoligons    (geom     geometry(MULTIPOLIGON, 3785));
+--      CREATE TABLE IF NOT EXISTS multipolygons    (geom     geometry(MULTIPOLYGON, 3785));
 -- In some cases, you may also need to change `dbconn` function below and/or
 -- to set necessary privileges for user and tables
 --
