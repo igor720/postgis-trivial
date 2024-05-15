@@ -43,7 +43,7 @@ checkdb = bracket
             (\(e::SomeException) -> ioError (userError (show e)))
         if res/=(""::ByteString)
             then return ()
-            else ioError (userError "Unsuccessfull probe SQL result")
+            else ioError (userError "No PostGIS detected")
     )
 
 tests :: Test
@@ -58,9 +58,12 @@ tests = TestList
 main :: IO ()
 main = do
     catch checkdb
-        (\(_::IOException) -> do
+        (\(e::IOException) -> do
             putStrLn
-                "\nSkipping tests (see Spec.hs header for test instructions)"
+                ("\nSkipping tests:"++
+                "\n  "++show e++
+                "\n  (see Spec.hs header for test instructions)"
+                )
             exitSuccess
         )
     cs <- runTestTT tests

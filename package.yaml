@@ -23,15 +23,15 @@ description: Please see the README on GitHub at <https://github.com/igor720/post
 dependencies:
   - base >= 4.7 && < 5
   - binary >= 0.7 && < 0.9
-  - bytestring > 0.9 && < 0.11
+  - bytestring > 0.9 && < 0.12
   - bytestring-lexing >= 0.4 && < 0.6
   - containers >= 0.6 && < 0.7
   - cpu >= 0.1 && < 0.2
   - data-binary-ieee754 >= 0.4 && < 0.5
-  - mtl >= 2.1 && < 2.3
-  - postgresql-simple >= 0.6 && < 0.7
+  - mtl >= 2.1 && < 2.4
+  - postgresql-simple >= 0.6 && < 0.8
   - storable-record >= 0.0 && < 0.1
-  - vector >= 0.12 && < 0.13
+  - vector >= 0.12 && < 0.14
 
 library:
   exposed-modules:
