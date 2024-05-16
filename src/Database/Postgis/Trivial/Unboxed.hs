@@ -1,7 +1,7 @@
--- | Allows PostGIS to work with various data enclosed in
+-- | Allows PostGIS to work with geospatial data enclosed in
 -- Traversable data structures with Unboxed Vectors as the most inner structures.
 --
--- Example of suitable data types for LineString and Polygon
+-- Example of suitable data types for LineString and Polygon.
 --
 -- > {-# LANGUAGE TypeFamilies #-}
 -- >

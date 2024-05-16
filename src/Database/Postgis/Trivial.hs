@@ -1,4 +1,4 @@
--- | Allows PostGIS to work with various data enclosed in
+-- | Allows PostGIS to work with Traversable geospatial data enclosed in
 -- Traversable data structures.
 --
 -- Example of suitable data types for LineString and Polygon.
