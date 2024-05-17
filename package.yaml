@@ -89,4 +89,4 @@ tests:
     - -Wall
     dependencies:
     - postgis-trivial
-    - HUnit
+    - HUnit >= 1.6 && < 1.7
