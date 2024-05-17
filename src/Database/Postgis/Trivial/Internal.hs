@@ -46,15 +46,16 @@ import GHC.Real ( fromIntegral, Integral )
 import System.Endian ( getSystemEndianness, Endianness(..) )
 import Foreign ( Int64, Bits((.&.), (.|.)) )
 import Control.Applicative ( (<$>) )
-import Control.Monad.Reader
 import Control.Monad (void )
+import Control.Monad.Reader ( ReaderT(runReaderT), asks, MonadTrans(lift) )
 import Control.Exception ( throw )
 import Data.Foldable ( Foldable(..) )
 import Data.ByteString.Lex.Integral ( packHexadecimal, readHexadecimal )
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BC
-import Data.Binary
+import Data.Binary ( Word8, Word32, Word64, Get, Put, byteSwap32, byteSwap64,
+    Binary(get, put) )
 import Data.Binary.Get ( getLazyByteString, lookAhead )
 import Data.Binary.Put ( putLazyByteString )
 import Data.Maybe ( isJust )
