@@ -4,7 +4,7 @@ Haskell Postgresql/PostGIS DB Driver
 
 This library provides methods which allow direct use of user-defined Haskell data with Postgresql/PostGIS databases. It is based on [postgresql-simple](https://hackage.haskell.org/package/postgresql-simple) and can be used with other postgresql-simple capabilities.
 
-The main interface module `Database.PostGIS.Trivial` allows PostGIS to work with various data enclosed in `Traversable` data structures. If the most inner data structures are `Unboxed` vectors, then use the functions and types defined in `Database.PostGIS.Trivial.Unboxed`. And, if the most inner data structures are `Storable` vectors then use `Database.PostGIS.Trivial.Storable` module.
+The main interface module `Database.PostGIS.Trivial` allows PostGIS to work with geospatial data enclosed in `Traversable` data structures. If the most inner data structures are `Unboxed` vectors, then use the functions and types defined in `Database.PostGIS.Trivial.Unboxed`. And, if the most inner data structures are `Storable` vectors then use `Database.PostGIS.Trivial.Storable` module.
 
 ## Synopsis
 
